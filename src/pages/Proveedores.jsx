@@ -1,9 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react'; // <-- AQUÍ AGREGAMOS useState
 import { useNavigate } from 'react-router-dom';
-import { Plus, Search, MessageCircle, Mail, Edit, Trash2, FileText } from 'lucide-react';
+import { Plus, Search, MessageCircle, Mail, Edit, Trash2, FileText, X } from 'lucide-react'; // <-- Agrega la X al final
+import { supabase } from '../supabase'; // <-- AGREGA ESTA LÍNEA NUEVA
 
 export default function Proveedores() {
   const navigate = useNavigate();
+
+// --- AQUÍ VA LA PIEZA 1 ---
+  const [mostrarModal, setMostrarModal] = useState(false);
+  const [guardando, setGuardando] = useState(false);
+  const [formulario, setFormulario] = useState({
+    razon: '',     
+    contacto: '',  
+    tel: '',       
+    email: '',     
+    estado: 'Activo'
+  });
+  // --------------------------
+
 
   // Datos de prueba
   const proveedores = [
@@ -16,6 +30,34 @@ export default function Proveedores() {
   const handleGenerarOC = (prov) => {
     navigate('/ordenes', { state: { proveedor: prov } });
   };
+  // Función clave: Viajamos a /ordenes y le mandamos los datos del proveedor en la "maleta" (state)
+  const handleGenerarOC = (prov) => {
+    navigate('/ordenes', { state: { proveedor: prov } });
+  };
+
+  // --- AQUÍ PEGAS LA PIEZA 2 (JUSTO DEBAJO DE LA OTRA FUNCIÓN Y ARRIBA DEL RETURN) ---
+  const handleCrearProveedor = async (e) => {
+    e.preventDefault();
+    setGuardando(true);
+
+    try {
+      const { error } = await supabase
+        .from('proveedores') 
+        .insert([formulario]);
+
+      if (error) throw error;
+
+      setMostrarModal(false);
+      setFormulario({ razon: '', contacto: '', tel: '', email: '', estado: 'Activo' });
+      
+    } catch (error) {
+      console.error("Error al crear proveedor:", error.message);
+      alert("Hubo un error al guardar. Verifica la consola.");
+    } finally {
+      setGuardando(false);
+    }
+  };
+  // ----------------------------------------------------------------------------------
 
   return (
     <div className="space-y-6">
@@ -92,6 +134,97 @@ export default function Proveedores() {
           </tbody>
         </table>
       </div>
+      {/* --- AQUÍ PEGAS LA PIEZA 3 (EL MODAL) --- */}
+      {mostrarModal && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
+            
+            <div className="bg-[#0A2E50] p-4 flex justify-between items-center text-white">
+              <h3 className="font-bold text-lg">Registrar Nuevo Proveedor</h3>
+              <button onClick={() => setMostrarModal(false)} className="text-blue-200 hover:text-white">
+                <X size={24} />
+              </button>
+            </div>
+
+            <form onSubmit={handleCrearProveedor} className="p-6 space-y-4">
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Empresa / Razón Social</label>
+                <input 
+                  type="text" required
+                  value={formulario.razon}
+                  onChange={(e) => setFormulario({...formulario, razon: e.target.value})}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-[#C59B63] focus:outline-none"
+                  placeholder="Ej: Aceros Arequipa S.A."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Nombre del Contacto</label>
+                <input 
+                  type="text" required
+                  value={formulario.contacto}
+                  onChange={(e) => setFormulario({...formulario, contacto: e.target.value})}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-[#C59B63] focus:outline-none"
+                  placeholder="Ej: Juan Pérez"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Teléfono / WhatsApp</label>
+                  <input 
+                    type="text" required
+                    value={formulario.tel}
+                    onChange={(e) => setFormulario({...formulario, tel: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-[#C59B63] focus:outline-none"
+                    placeholder="999888777"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-1">Estado</label>
+                  <select 
+                    value={formulario.estado}
+                    onChange={(e) => setFormulario({...formulario, estado: e.target.value})}
+                    className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-[#C59B63] focus:outline-none"
+                  >
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Correo Electrónico</label>
+                <input 
+                  type="email" required
+                  value={formulario.email}
+                  onChange={(e) => setFormulario({...formulario, email: e.target.value})}
+                  className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-[#C59B63] focus:outline-none"
+                  placeholder="ventas@empresa.com"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4 border-t border-gray-100 mt-6">
+                <button 
+                  type="button" 
+                  onClick={() => setMostrarModal(false)}
+                  className="flex-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 font-bold py-2.5 rounded-lg transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  type="submit" 
+                  disabled={guardando}
+                  className="flex-1 bg-[#C59B63] hover:bg-yellow-600 text-white font-bold py-2.5 rounded-lg transition-colors disabled:opacity-70"
+                >
+                  {guardando ? 'Guardando...' : 'Guardar Proveedor'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+      {/* ----------------------------------------- */}
     </div>
   );
 }
