@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sinme-azul: #0A2E50;
+  --color-sinme-dorado: #C59B63;
+}
