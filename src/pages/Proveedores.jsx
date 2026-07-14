@@ -31,9 +31,7 @@ export default function Proveedores() {
     navigate('/ordenes', { state: { proveedor: prov } });
   };
   // Función clave: Viajamos a /ordenes y le mandamos los datos del proveedor en la "maleta" (state)
-  const handleGenerarOC = (prov) => {
-    navigate('/ordenes', { state: { proveedor: prov } });
-  };
+
 
   // --- AQUÍ PEGAS LA PIEZA 2 (JUSTO DEBAJO DE LA OTRA FUNCIÓN Y ARRIBA DEL RETURN) ---
   const handleCrearProveedor = async (e) => {
@@ -57,6 +55,7 @@ export default function Proveedores() {
       setGuardando(false);
     }
   };
+
   // ----------------------------------------------------------------------------------
 
   return (
@@ -66,7 +65,10 @@ export default function Proveedores() {
           <h2 className="text-2xl font-bold text-sinme-azul">Directorio de Proveedores</h2>
           <p className="text-gray-500 text-sm mt-1">Gestiona los contactos para cotizaciones y abastecimiento.</p>
         </div>
-        <button className="bg-sinme-dorado hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 shadow-md transition-colors">
+        <button 
+          onClick={() => setMostrarModal(true)}
+          className="bg-sinme-dorado hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 shadow-md transition-colors"
+        >
           <Plus size={20} />
           Nuevo Proveedor
         </button>

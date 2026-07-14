@@ -90,7 +90,7 @@ export default function App() {
                     Bienvenido, {usuarioActivo.nombre_completo}
                   </h3>
                   <p className="text-gray-500">
-                    Haz clic en "Proveedores", "Inventario" u "Órdenes de Compra" para empezar.
+                    UNSCH.
                   </p>
                 </div>
               }
