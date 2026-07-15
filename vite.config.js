@@ -5,4 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   base: '/sinme-sistema-web/', // Esto es importante para que funcione correctamente en GitHub Pages
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    //setupFiles: './src/setupTests.js', // Archivo opcional para configuraciones globales
+  }
 })
