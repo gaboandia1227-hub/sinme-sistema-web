@@ -7,5 +7,5 @@ export const verificarEstadoStock = (stockActual, stockMinimo) => {
 
 export const calcularPorcentajeStock = (stockActual, stockMinimo) => {
   if (stockMinimo === 0) return 0;
-  return Math.round(stockActual / stockMinimo);
+  return Math.round((stockActual / stockMinimo) * 100);
 };
