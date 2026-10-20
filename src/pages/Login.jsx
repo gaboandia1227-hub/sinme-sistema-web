@@ -63,7 +63,7 @@ const handleIngresar = async (e) => {
           <div className="bg-sinme-dorado text-white w-16 h-16 rounded-xl flex items-center justify-center font-bold text-4xl mx-auto shadow-lg mb-4">
             S
           </div>
-          <h2 className="text-2xl font-bold text-white">CONSORCIO SINME</h2>
+          <h2 className="text-2xl font-bold text-white">CONSORCIO SINME - Grupo 5</h2>
           <p className="text-blue-200 text-sm mt-1">Sistema de Gestión Logística</p>
         </div>
 
