@@ -11,7 +11,7 @@ export default function Inventario() {
   const [mostrarModal, setMostrarModal] = useState(false);
   const [guardando, setGuardando] = useState(false);
   const [formulario, setFormulario] = useState({
-    codigo_sku: '',
+    sku_codigo: '',
     nombre: '',
     unidad_medida: 'UND',
     stock_minimo: '',
@@ -47,7 +47,7 @@ export default function Inventario() {
 
     try {
       const nuevoMaterial = {
-        codigo_sku: formulario.codigo_sku,
+        sku_codigo: formulario.sku_codigo,
         nombre: formulario.nombre,
         unidad_medida: formulario.unidad_medida,
         stock_minimo: parseFloat(formulario.stock_minimo),
@@ -62,7 +62,7 @@ export default function Inventario() {
 
       // Si todo sale bien, cerramos el modal, limpiamos y recargamos la tabla
       setMostrarModal(false);
-      setFormulario({ codigo_sku: '', nombre: '', unidad_medida: 'UND', stock_minimo: '', stock_actual: '' });
+      setFormulario({ sku_codigo: '', nombre: '', unidad_medida: 'UND', stock_minimo: '', stock_actual: '' });
       obtenerMateriales();
 
     } catch (error) {
@@ -76,7 +76,7 @@ export default function Inventario() {
   // Filtrador para la barra de búsqueda
   const materialesFiltrados = materiales.filter(m => 
     m.nombre.toLowerCase().includes(busqueda.toLowerCase()) || 
-    m.codigo_sku.toLowerCase().includes(busqueda.toLowerCase())
+    m.sku_codigo.toLowerCase().includes(busqueda.toLowerCase())
   );
 
   return (
@@ -135,7 +135,7 @@ export default function Inventario() {
                 materialesFiltrados.map((item) => (
                   <tr key={item.id_material} className="hover:bg-gray-50 transition-colors">
                     <td className="py-4 px-6">
-                      <p className="font-bold text-gray-800 text-sm">{item.codigo_sku}</p>
+                      <p className="font-bold text-gray-800 text-sm">{item.sku_codigo}</p>
                       <p className="text-sinme-azul font-medium">{item.nombre}</p>
                     </td>
                     <td className="py-4 px-6 text-center text-gray-600 text-sm font-medium">{item.unidad_medida}</td>
@@ -180,8 +180,8 @@ export default function Inventario() {
                 <input 
                   type="text" 
                   required
-                  value={formulario.codigo_sku}
-                  onChange={(e) => setFormulario({...formulario, codigo_sku: e.target.value})}
+                  value={formulario.sku_codigo}
+                  onChange={(e) => setFormulario({...formulario, sku_codigo: e.target.value})}
                   className="w-full border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-sinme-dorado focus:outline-none"
                   placeholder="Ej: MAT-001"
                 />

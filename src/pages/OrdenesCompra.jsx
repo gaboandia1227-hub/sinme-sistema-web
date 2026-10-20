@@ -39,7 +39,7 @@ export default function OrdenesCompra() {
     const mat = materialesDB.find(m => m.id_material.toString() === matSeleccionado);
     const nuevoItem = {
       id: Date.now(),
-      sku: mat.codigo_sku,
+      sku: mat.sku_codigo,
       nombre: mat.nombre,
       unidad: mat.unidad_medida,
       cantidad: parseFloat(cantidad),
@@ -94,7 +94,7 @@ export default function OrdenesCompra() {
             <select value={matSeleccionado} onChange={(e) => setMatSeleccionado(e.target.value)} className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-sinme-dorado focus:outline-none">
               <option value="">Seleccione un material...</option>
               {materialesDB.map(m => (
-                <option key={m.id_material} value={m.id_material}>{m.codigo_sku} - {m.nombre}</option>
+                <option key={m.id_material} value={m.id_material}>{m.sku_codigo} - {m.nombre}</option>
               ))}
             </select>
           </div>
