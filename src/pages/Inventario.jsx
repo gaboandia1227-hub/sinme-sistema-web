@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Plus, X, AlertTriangle, CheckCircle, Package } from 'lucide-react';
 import { supabase } from '../supabase';
+import { calcularPorcentajeStock } from '../utils/stockLogic';
 
 export default function Inventario() {
   const [materiales, setMateriales] = useState([]);
@@ -97,6 +98,25 @@ export default function Inventario() {
         >
           <Plus size={20} /> Nuevo Material
         </button>
+      </div>
+
+      {/* Resumen General */}
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <h3 className="text-lg font-bold text-sinme-azul mb-4">Resumen General</h3>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-gray-50 p-4 rounded-lg text-center">
+            <p className="text-3xl font-bold text-sinme-azul">{materiales.length}</p>
+            <p className="text-sm text-gray-500 mt-1">Materiales registrados</p>
+          </div>
+          <div className="bg-gray-50 p-4 rounded-lg text-center">
+            <p className="text-3xl font-bold text-sinme-azul">
+              {materiales.length === 0 ? 0 : Math.round(
+                materiales.reduce((acc, m) => acc + calcularPorcentajeStock(m.stock_actual, m.stock_minimo), 0) / materiales.length
+              )}%
+            </p>
+            <p className="text-sm text-gray-500 mt-1">Stock promedio vs. minimo</p>
+          </div>
+        </div>
       </div>
 
       {/* Barra de Búsqueda */}

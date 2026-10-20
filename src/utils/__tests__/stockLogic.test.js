@@ -1,6 +1,6 @@
 // src/utils/stockLogic.test.js
 import { describe, it, expect } from 'vitest';
-import { verificarEstadoStock } from "../stockLogic";
+import { verificarEstadoStock, calcularPorcentajeStock } from "../stockLogic";
 
 describe('Lógica de Alertas de Stock de CONSORCIO SINME S.A.C.', () => {
   
@@ -20,6 +20,20 @@ describe('Lógica de Alertas de Stock de CONSORCIO SINME S.A.C.', () => {
   it('Debe retornar "Agotado" si el stock actual es 0', () => {
     const resultado = verificarEstadoStock(0, 10);
     expect(resultado).toBe('Agotado');
+  });
+
+});
+
+describe('Calculo de porcentaje de stock', () => {
+
+  it('Debe calcular el porcentaje de stock actual sobre el minimo', () => {
+    const resultado = calcularPorcentajeStock(50, 10);
+    expect(resultado).toBe(500); // 50 es 500% del minimo (10)
+  });
+
+  it('Debe retornar 100 cuando el stock actual es igual al minimo', () => {
+    const resultado = calcularPorcentajeStock(10, 10);
+    expect(resultado).toBe(100);
   });
 
 });

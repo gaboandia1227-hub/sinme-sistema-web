@@ -4,3 +4,8 @@ export const verificarEstadoStock = (stockActual, stockMinimo) => {
   if (stockActual <= stockMinimo) return 'Reabastecer';
   return 'Optimo';
 };
+
+export const calcularPorcentajeStock = (stockActual, stockMinimo) => {
+  if (stockMinimo === 0) return 0;
+  return Math.round(stockActual / stockMinimo);
+};
